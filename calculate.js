@@ -28,6 +28,19 @@ function handleTransaction(amountFieldId, totalFieldId, isDeposit) {
     return;
   }
 
+  if (!isDeposit) {
+    // Check if balance is sufficient for withdrawal before updating total withdrawal
+    const totalBalance = document.getElementById("total-balance");
+    const prevBalance = parseFloat(totalBalance.innerText);
+    if (prevBalance - amount < 500) {
+      alert(
+        "You don't have enough money for withdrawal or balance cannot go below $500!"
+      );
+      amountField.value = "";
+      return;
+    }
+  }
+
   const totalField = document.getElementById(totalFieldId);
   const prevAmount = parseFloat(totalField.innerText);
   totalField.innerText = (prevAmount + amount).toFixed(2);
